@@ -3,10 +3,6 @@ package com.example.user.weatherappadvanced.DI;
 import android.content.Context;
 
 import com.example.user.weatherappadvanced.API.WeatherAPI;
-import com.example.user.weatherappadvanced.BuildConfig;
-import com.squareup.okhttp.OkHttpClient;
-
-import java.util.concurrent.TimeUnit;
 
 import dagger.Module;
 import dagger.Provides;

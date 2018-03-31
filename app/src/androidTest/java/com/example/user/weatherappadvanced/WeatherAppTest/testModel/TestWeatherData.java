@@ -1,4 +1,4 @@
-package com.example.user.weatherappadvanced.WeatherAppTest.TestModel;
+package com.example.user.weatherappadvanced.WeatherAppTest.testModel;
 
 /**
  * Created by User on 05/03/2018.

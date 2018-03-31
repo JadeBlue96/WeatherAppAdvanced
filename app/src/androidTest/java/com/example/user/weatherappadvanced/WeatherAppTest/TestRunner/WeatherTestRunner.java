@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.test.runner.AndroidJUnitRunner;
 
-import com.example.user.weatherappadvanced.WeatherAppTest.TestApplication.TestWeatherApplication;
+import com.example.user.weatherappadvanced.WeatherAppTest.testApplication.TestWeatherApplication;
 
 /**
  * Created by User on 05/03/2018.

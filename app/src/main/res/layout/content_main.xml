@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,7 +32,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/city_country"
-        android:textColorHint="@color/colorAccent">
+        android:textColorHint="@color/colorAccent"
+        android:inputType="text"
+        android:singleLine="true">
 
 
         <requestFocus />
@@ -45,178 +49,199 @@
         android:layout_marginTop="10dp"
         android:textColor="@color/Black"
         android:onClick="showWeather"/>
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="351dp"
-        android:layout_height="189dp">
 
-        <TextView
-            android:id="@+id/city_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:textSize="30sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="8dp"
-            android:paddingStart="5dp" />
+     <android.support.constraint.ConstraintLayout
+         android:layout_width="351dp"
+         android:layout_height="169dp">
 
-        <TextView
-            android:id="@+id/country_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:textSize="25sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/city_id"
-            android:layout_marginLeft="8dp"
-            android:paddingStart="5dp" />
+         <TextView
+             android:id="@+id/err_field"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:textAlignment="center"
+             android:textColor="@color/IndianRed"
+             android:textSize="30dp"
+             android:visibility="invisible" />
 
-        <TextView
-            android:id="@+id/coords_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/country_id"
-            android:layout_marginLeft="8dp"
-            android:paddingStart="5dp" />
+         <TextView
+             android:id="@+id/city_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="8dp"
+             android:layout_marginStart="8dp"
+             android:layout_marginTop="8dp"
+             android:paddingLeft="5dp"
+             android:paddingStart="5dp"
+             android:paddingTop="5dp"
+             android:textSize="30sp"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             tools:ignore="RtlHardcoded,RtlSymmetry" />
 
-        <TextView
-            android:id="@+id/cod_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coords_id"
-            android:layout_marginLeft="8dp"
-            android:paddingStart="5dp" />
+         <TextView
+             android:id="@+id/country_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="8dp"
+             android:layout_marginStart="8dp"
+             android:paddingLeft="5dp"
+             android:paddingStart="5dp"
+             android:paddingTop="5dp"
+             android:textSize="25sp"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/city_id"
+             tools:ignore="RtlHardcoded,RtlSymmetry" />
 
-        <ImageView
-            android:id="@+id/id_w_icon"
-            android:layout_width="89dp"
-            android:layout_height="85dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginRight="8dp"
-            android:contentDescription="@string/icon" />
-    </android.support.constraint.ConstraintLayout>
+         <TextView
+             android:id="@+id/coords_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="8dp"
+             android:paddingLeft="5dp"
+             android:paddingStart="5dp"
+             android:paddingTop="5dp"
+             android:textSize="20sp"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/country_id"
+             tools:ignore="RtlHardcoded,RtlSymmetry" />
 
-    <LinearLayout
-        android:layout_width="351dp"
-        android:layout_height="wrap_content"
-        android:background="@color/DarkOliveGreen"
-        android:orientation="vertical"
-        android:textAlignment="center">
+         <TextView
+             android:id="@+id/cod_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="8dp"
+             android:paddingLeft="5dp"
+             android:paddingStart="5dp"
+             android:paddingTop="5dp"
+             android:textSize="20sp"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/coords_id"
+             tools:ignore="RtlHardcoded,RtlSymmetry" />
 
-        <TextView
-            android:id="@+id/temp_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:paddingTop="10dp"
-            android:textAlignment="center"
-            android:textColor="@color/OldLace"
-            android:textSize="16sp" />
+         <ImageView
+             android:id="@+id/id_w_icon"
+             android:layout_width="89dp"
+             android:layout_height="85dp"
+             android:layout_marginBottom="8dp"
+             android:layout_marginEnd="8dp"
+             android:layout_marginRight="8dp"
+             android:layout_marginTop="8dp"
+             android:contentDescription="@string/icon"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             tools:ignore="RtlHardcoded" />
 
-        <TextView
-            android:id="@+id/main_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:paddingTop="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/OldLace"
-            android:textSize="14sp" />
+         <Button
+             android:id="@+id/metric_change"
+             android:layout_width="63dp"
+             android:layout_height="40dp"
+             android:layout_marginBottom="4dp"
+             android:layout_marginEnd="44dp"
+             android:layout_marginStart="8dp"
+             android:onClick="switchMetric"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toStartOf="@+id/id_w_icon"
+             app:layout_constraintHorizontal_bias="0.978"
+             app:layout_constraintStart_toStartOf="parent" />
+     </android.support.constraint.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/desc_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:paddingTop="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/OldLace"
-            android:textSize="14sp" />
+     <LinearLayout
+         android:layout_width="351dp"
+         android:layout_height="wrap_content"
+         android:background="@color/DarkOliveGreen"
+         android:orientation="vertical"
+         android:textAlignment="center">
 
-        <TextView
-            android:id="@+id/wind_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/OldLace"
-            android:textSize="14sp"
-            android:paddingStart="5dp" />
+         <TextView
+             android:id="@+id/temp_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:fontFamily="sans-serif"
+             android:paddingTop="10dp"
+             android:textAlignment="center"
+             android:textColor="@color/OldLace"
+             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/clouds_per_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/OldLace"
-            android:textSize="14sp"
-            android:paddingStart="5dp" />
+         <TextView
+             android:id="@+id/main_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:fontFamily="sans-serif"
+             android:paddingTop="5dp"
+             android:textAlignment="center"
+             android:textColor="@color/OldLace"
+             android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/sunrise_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/OldLace"
-            android:textSize="14sp"
-            android:paddingStart="5dp" />
+         <TextView
+             android:id="@+id/desc_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:fontFamily="sans-serif"
+             android:paddingTop="5dp"
+             android:textAlignment="center"
+             android:textColor="@color/OldLace"
+             android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/sunset_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:textAlignment="center"
-            android:textColor="@color/OldLace"
-            android:textSize="14sp"
-            android:paddingStart="5dp" />
-    </LinearLayout>
-    <ProgressBar
-        android:id="@+id/prog_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:indeterminate="true"
-        android:theme="@style/RedAccent"/>
+         <TextView
+             android:id="@+id/wind_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:fontFamily="sans-serif"
+             android:paddingLeft="5dp"
+             android:paddingStart="5dp"
+             android:paddingTop="5dp"
+             android:textAlignment="center"
+             android:textColor="@color/OldLace"
+             android:textSize="14sp"
+             tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+         <TextView
+             android:id="@+id/clouds_per_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:fontFamily="sans-serif"
+             android:paddingLeft="5dp"
+             android:paddingStart="5dp"
+             android:paddingTop="5dp"
+             android:textAlignment="center"
+             android:textColor="@color/OldLace"
+             android:textSize="14sp"
+             tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+         <TextView
+             android:id="@+id/sunrise_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:fontFamily="sans-serif"
+             android:paddingLeft="5dp"
+             android:paddingStart="5dp"
+             android:paddingTop="5dp"
+             android:textAlignment="center"
+             android:textColor="@color/OldLace"
+             android:textSize="14sp"
+             tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+         <TextView
+             android:id="@+id/sunset_id"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:fontFamily="sans-serif"
+             android:paddingLeft="5dp"
+             android:paddingStart="5dp"
+             android:paddingTop="5dp"
+             android:textAlignment="center"
+             android:textColor="@color/OldLace"
+             android:textSize="14sp"
+             tools:ignore="RtlHardcoded,RtlSymmetry" />
+     </LinearLayout>
 
  </LinearLayout>
 </ScrollView>

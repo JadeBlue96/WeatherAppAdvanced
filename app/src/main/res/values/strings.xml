@@ -9,4 +9,6 @@
     <string name="no_city_entered">No city has been entered.</string>
     <string name="inv_city_entered">Invalid city entered.</string>
     <string name="connection_timeout">Connection Timeout.</string>
+    <string name="fahrenheit">Fahr</string>
+    <string name="celsius">Cel</string>
 </resources>

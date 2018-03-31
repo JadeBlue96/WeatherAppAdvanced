@@ -6,31 +6,27 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.user.weatherappadvanced.API.WeatherAPI;
 import com.example.user.weatherappadvanced.Application.WeatherApp;
-import com.example.user.weatherappadvanced.Model.WeatherData;
-import com.example.user.weatherappadvanced.Presenter.WeatherAppPresenter;
+import com.example.user.weatherappadvanced.model.WeatherData;
+import com.example.user.weatherappadvanced.presenter.WeatherAppPresenter;
 import com.example.user.weatherappadvanced.R;
-import com.example.user.weatherappadvanced.View.WeatherAppView;
+import com.example.user.weatherappadvanced.view.WeatherAppView;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -42,8 +38,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter> implements WeatherAppView {
 
-    private final String TAG = "WeatherTest";
-    @BindView(R.id.prog_id) ProgressBar progBar;
+
     @BindView(R.id.input_city_id) EditText in_city_name;
     @BindView(R.id.city_id) TextView city_name;
     @BindView(R.id.country_id)  TextView country_name;
@@ -57,10 +52,12 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
     @BindView(R.id.main_id)  TextView wmain;
     @BindView(R.id.desc_id) TextView wdesc;
     @BindView(R.id.id_w_icon)  ImageView icon;
-
+    @BindView(R.id.err_field) TextView err;
+    @BindView(R.id.metric_change) Button m_chg;
+    private FormatWeather formatWeather;
+    protected Boolean metric_flag;
     //private Unbinder unbinder;
     private ProgressDialog progressDialog;
-    private ViewGroup rootLayout;
     DateFormat local = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.UK);
 
     @Inject
@@ -71,16 +68,19 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
         super.onCreate(savedInstanceState);
         ((WeatherApp) getApplication()).appComponent().inject(this);
         setContentView(R.layout.activity_main);
-
-
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        rootLayout=findViewById(R.id.root_layout);
-
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.downloading_info));
-        disableProgressBar();
+        metric_flag=true;
+        m_chg.setText(R.string.celsius);
+        formatWeather=new FormatWeather(this);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if(err.getText().toString().equals(""))
+        {
+            icon.setVisibility(View.VISIBLE);
+        }
+
+
         setSupportActionBar(toolbar);
     }
 
@@ -89,6 +89,49 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
     protected void onDestroy() {
         super.onDestroy();
         //unbinder.unbind();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("savedTextCity", city_name.getText().toString());
+        outState.putString("savedTextCountry", country_name.getText().toString());
+        outState.putString("savedTextCoords", coords.getText().toString());
+        outState.putString("savedTextTemp", temp.getText().toString());
+        outState.putString("savedTextSunrise", sunrise.getText().toString());
+        outState.putString("savedTextSunset", sunset.getText().toString());
+        outState.putString("savedTextCod", cod.getText().toString());
+        outState.putString("savedTextWind", wind.getText().toString());
+        outState.putString("savedTextClouds", clouds.getText().toString());
+        outState.putString("savedTextWmain", wmain.getText().toString());
+        outState.putString("savedTextWdesc", wdesc.getText().toString());
+        outState.putString("savedTextErr", err.getText().toString());
+        outState.putString("savedImage",formatWeather.icon_tag);
+        outState.putBoolean("savedFlag",metric_flag);
+        outState.putString("savedMetricText",m_chg.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        city_name.setText(savedInstanceState.getString("savedTextCity"));
+        country_name.setText(savedInstanceState.getString("savedTextCountry"));
+        coords.setText(savedInstanceState.getString("savedTextCoords"));
+        temp.setText(savedInstanceState.getString("savedTextTemp"));
+        sunrise.setText(savedInstanceState.getString("savedTextSunrise"));
+        sunset.setText(savedInstanceState.getString("savedTextSunset"));
+        cod.setText(savedInstanceState.getString("savedTextCod"));
+        wind.setText(savedInstanceState.getString("savedTextWind"));
+        clouds.setText(savedInstanceState.getString("savedTextClouds"));
+        wmain.setText(savedInstanceState.getString("savedTextWmain"));
+        wdesc.setText(savedInstanceState.getString("savedTextWdesc"));
+        formatWeather.icon_tag=savedInstanceState.getString("savedImage");
+        Picasso.with(getBaseContext()).load(formatWeather.icon_tag).into(icon);
+        if(err.getText()!="")  err.setText("");
+        metric_flag=savedInstanceState.getBoolean("savedFlag");
+        m_chg.setText(savedInstanceState.getString("savedMetricText"));
+
+
     }
 
     @NonNull
@@ -113,41 +156,31 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
     }
 
 
-
-
-
     @Override
     public void showLoad() {
         progressDialog.show();
-        enableProgressBar();
     }
 
     @Override
     public void hideLoad() {
         progressDialog.hide();
-        disableProgressBar();
     }
 
     @Override
     public void showErr(String message) {
         hideLoad();
-        Snackbar.make(rootLayout,message,Snackbar.LENGTH_LONG).show();
+        formatWeather.ClearWeather();
+        err.setText(message);
+        err.setVisibility(View.VISIBLE);
+        //Snackbar.make(rootLayout,message,Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void onWeatherObtained(WeatherData weatherData) {
         hideLoad();
-        displayWeather(weatherData);
-    }
-
-    @Override
-    public void enableProgressBar() {
-        progBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void disableProgressBar() {
-        progBar.setVisibility(View.INVISIBLE);
+        formatWeather.displayWeather(weatherData);
+        err.setText("");
+        icon.setVisibility(View.VISIBLE);
     }
 
 
@@ -156,12 +189,29 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
     public void showWeather(View view) {
         hideKeyboard(MainActivity.this,in_city_name.getWindowToken()); //Retrieve a unique token identifying the window this view is attached to
         String city=in_city_name.getText().toString();
+        err.setVisibility(View.INVISIBLE);
         if(city.isEmpty())
         {
-            showErr(getString(R.string.no_city_entered));
+            showErr("No city entered.");
             return;
         }
-        presenter.ObtainWeather(weatherAPI,city);
+        presenter.ObtainWeather(weatherAPI,city,metric_flag);
+    }
+
+    @OnClick(R.id.metric_change)
+    public void switchMetric(View view) {
+        if(metric_flag==true)
+        {
+            metric_flag=false;
+            m_chg.setText(R.string.fahrenheit);
+            showWeather(view);
+        }
+        else {
+            metric_flag=true;
+            m_chg.setText(R.string.celsius);
+            showWeather(view);
+        }
+        err.setVisibility(View.INVISIBLE);
     }
 
 
@@ -174,48 +224,5 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
         }
     }
 
-    public void displayWeather(WeatherData weatherData) {
-        String Text ="City:" + weatherData.getName();             //City Name
-        city_name.setText(Text);
-        Text ="Country:" + weatherData.getCountry();              //Country Name
-        country_name.setText(Text);
-        Text = "Coordinates:" +"(" + weatherData.getLat() + "," + weatherData.getLon() + ")";       //Coordinates
-        coords.setText(Text);
-        Text = "COD:"+ weatherData.getCod();                           //Code
-        cod.setText(Text);
-        Text = String.format(Locale.UK, "Temperature: %.2f C", weatherData.getTemp()-273.15);        //Temperature in Celsius
-        temp.setText(Text);
-        Text="Weather status:"+weatherData.getWeatherMain();           //Weather main status
-        wmain.setText(Text);
-        Text="Weather Description:"+weatherData.getWeatherDesc();      //Weather description
-        wdesc.setText(Text);
-        Text="Wind Speed:"+weatherData.getWindSpd()+"m/s, Degrees:"+weatherData.getWindDeg();         //Wind speed in m/s
-        wind.setText(Text);
-        Text="Cloud Percentage:"+weatherData.getCloudPer()+"%";                //Clouds percentage
-        clouds.setText(Text);
 
-        Date d_sunrise = new Date(weatherData.getSunrise() * 1000);           //Sunrise date up to seconds
-        Date d_sunset = new Date(weatherData.getSunset() * 1000);              //Sunset date up to seconds
-        Text = "Sunrise:" + local.format(d_sunrise);
-        sunrise.setText(Text);
-        Text = "Sunset:" + local.format(d_sunset);
-        sunset.setText(Text);
-        Text=weatherData.getWeatherIcon();
-        String iconURL="http://openweathermap.org/img/w/"+Text+".png";       //Weather icon ID information
-        Picasso.with(getBaseContext()).load(iconURL).into(icon);
-        logQueriedData(weatherData);
-
-    }
-
-    public void logQueriedData(WeatherData weatherData)
-    {
-        Date d_sunrise = new Date(weatherData.getSunrise() * 1000);           //Sunrise date up to seconds
-        Date d_sunset = new Date(weatherData.getSunset() * 1000);              //Sunset date up to seconds
-        Log.d(TAG, "\nExecution success.. Name:" + weatherData.getName()
-                + ", Coordinates: (Latitude: " + weatherData.getLat() + ", Longtitude: " + weatherData.getLon() + " ), "
-                + String.format(Locale.UK, "Temperature: %.2f C ,", weatherData.getTemp()) +
-                " Pressure: " + weatherData.getPressure() + ", Humidity: , " + weatherData.getHumidity() +
-                "Sunrise: " + local.format(d_sunrise) + ", Sunset: , " + local.format(d_sunset)  +
-                "Country: " + weatherData.getCountry() + ", COD: " + weatherData.getCod());
-    }
 }

@@ -1,4 +1,4 @@
-package com.example.user.weatherappadvanced.Model;
+package com.example.user.weatherappadvanced.model;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class WeatherData {
 
     private Coord coord;
-    private int cod;
+    private Integer cod;
     private String base;
     private String name;
     private Main main;
@@ -33,7 +33,7 @@ public class WeatherData {
 
 
 
-    public WeatherData(Coord coords, int code, String base, String name, Main main, List<Weather> weather, Sys sys,Wind wind,Clouds clouds) {
+    public WeatherData(Coord coords, Integer code, String base, String name, Main main, List<Weather> weather, Sys sys,Wind wind,Clouds clouds) {
         this.coord = coords;
         this.cod = code;
         this.base = base;
@@ -45,28 +45,9 @@ public class WeatherData {
         this.clouds=clouds;
     }
 
-    public List<Weather> getWeather() {
-        return weather;
-    }
 
-    public void setWeather(List<Weather> weather) {
-        this.weather = weather;
-    }
-
-    public Sys getSys() {
-        return sys;
-    }
-
-    public void setSys(Sys sys) {
-        this.sys = sys;
-    }
-
-    public int getCod() {
+    public Integer getCod() {
         return cod;
-    }
-
-    public void setCod(int code) {
-        this.cod = code;
     }
 
     public String getBase() {
@@ -77,14 +58,6 @@ public class WeatherData {
         this.base = base;
     }
 
-    public Coord getCoord() {
-        return coord;
-    }
-
-    public void setCoord(Coord coord) {
-        this.coord= coord;
-    }
-
     public String getName() {
         return name;
     }
@@ -93,37 +66,29 @@ public class WeatherData {
         this.name = name;
     }
 
-    public Main getMain() {
-        return main;
-    }
-
-    public void setMain(Main main) {
-        this.main = main;
-    }
-
 
 
 
 
     //-----------Main get methods------------
 
-    public double getLat() {
+    public Double getLat() {
         return coord.getLat();
     }
 
-    public double getLon() {
+    public Double getLon() {
         return coord.getLon();
     }
 
-    public double getPressure() {
+    public Double getPressure() {
         return main.getPressure();
     }
 
-    public double getHumidity(){
+    public Double getHumidity(){
         return main.getHumidity();
     }
 
-    public double getTemp() {
+    public Double getTemp() {
         return main.getTemp();
     }
 
@@ -131,11 +96,11 @@ public class WeatherData {
         return sys.getCountry();
     }
 
-    public long getSunrise() {
+    public Long getSunrise() {
         return sys.getSunrise();
     }
 
-    public long getSunset() {
+    public Long getSunset() {
         return sys.getSunset();
     }
 
@@ -149,7 +114,7 @@ public class WeatherData {
 
     public Double getWindDeg() {return wind.getDeg();}
 
-    public int getCloudPer() {return clouds.getAll();}
+    public Integer getCloudPer() {return clouds.getAll();}
 
 
 

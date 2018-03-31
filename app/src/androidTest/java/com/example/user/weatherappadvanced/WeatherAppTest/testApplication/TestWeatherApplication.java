@@ -1,4 +1,4 @@
-package com.example.user.weatherappadvanced.WeatherAppTest.TestApplication;
+package com.example.user.weatherappadvanced.WeatherAppTest.testApplication;
 
 import com.example.user.weatherappadvanced.Application.WeatherApp;
 import com.example.user.weatherappadvanced.WeatherAppTest.TestDI.DaggerTestMockAppComponent;

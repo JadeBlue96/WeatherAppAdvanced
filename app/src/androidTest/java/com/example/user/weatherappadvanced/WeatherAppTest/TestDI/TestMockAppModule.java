@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.user.weatherappadvanced.API.WeatherAPI;
 import com.example.user.weatherappadvanced.DI.AppScope;
-import com.example.user.weatherappadvanced.WeatherAppTest.TestWeatherAPI.MockWeatherAPI;
+import com.example.user.weatherappadvanced.WeatherAppTest.testWeatherAPI.MockWeatherAPI;
 
 import dagger.Module;
 import dagger.Provides;

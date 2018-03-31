@@ -1,10 +1,10 @@
-package com.example.user.weatherappadvanced.View;
+package com.example.user.weatherappadvanced.view;
 
 import android.app.Activity;
 import android.os.IBinder;
 import android.view.View;
 
-import com.example.user.weatherappadvanced.Model.WeatherData;
+import com.example.user.weatherappadvanced.model.WeatherData;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 /**
@@ -16,14 +16,12 @@ public interface WeatherAppView extends MvpView {
     void showLoad();
     void hideLoad();
 
-    void showErr(String message);
     void onWeatherObtained(WeatherData weatherData);
-
-    void enableProgressBar();
-    void disableProgressBar();
-
+    //void ClearWeather();
     void hideKeyboard(Activity activity, IBinder windowToken);
-    void displayWeather(WeatherData weatherData);
+    //void displayWeather(WeatherData weatherData);
     void showWeather(View view);
-    void logQueriedData(WeatherData weatherData);
+    //void logQueriedData(WeatherData weatherData);
+    void switchMetric(View view);
+    void showErr(String message);
 }

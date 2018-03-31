@@ -1,4 +1,4 @@
-package com.example.user.weatherappadvanced.Model;
+package com.example.user.weatherappadvanced.model;
 
 /**
  * Created by User on 18/02/2018.
@@ -6,35 +6,26 @@ package com.example.user.weatherappadvanced.Model;
 
 public class Weather {
 
-    private int id;
-    String main;
-    String description;
-    String icon;
+    private Integer id;
+    private String main;
+    private String description;
+    private String icon;
 
-    public Weather() {
-    }
-
-    public Weather(int id, String main, String description, String icon) {
-        this.id = id;
+    public Weather(String main) {
         this.main = main;
-        this.description = description;
-        this.icon = icon;
     }
 
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     public String getMain() {
         return main;
-    }
-
-    public void setMain(String main) {
-        this.main = main;
     }
 
     public String getDescription() {

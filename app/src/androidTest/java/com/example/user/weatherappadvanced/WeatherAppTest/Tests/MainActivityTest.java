@@ -1,23 +1,15 @@
 package com.example.user.weatherappadvanced.WeatherAppTest.Tests;
 
-import android.graphics.drawable.Drawable;
-import android.support.annotation.IdRes;
-import android.support.annotation.StringRes;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiSelector;
-import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
-import android.widget.ProgressBar;
 
 import com.example.user.weatherappadvanced.API.WeatherAPI;
 import com.example.user.weatherappadvanced.Activity.MainActivity;
-import com.example.user.weatherappadvanced.Model.WeatherData;
+import com.example.user.weatherappadvanced.model.WeatherData;
 import com.example.user.weatherappadvanced.R;
-import com.example.user.weatherappadvanced.WeatherAppTest.TestApplication.TestWeatherApplication;
+import com.example.user.weatherappadvanced.WeatherAppTest.testApplication.TestWeatherApplication;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,18 +24,14 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import static android.app.PendingIntent.getActivity;
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.allOf;
 
 /**
@@ -53,7 +41,6 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
     private static final String CITY_NAME = "London";
-    private static final String FAKE_CITY_NAME="Brrr";
 
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -74,7 +61,7 @@ public class MainActivityTest {
     }
     @Test
     public void correctWeatherDataDisplayed() {
-        WeatherData weatherData = weatherAPI.getWeather(CITY_NAME,WeatherAPI.API_KEY).toBlocking().first();
+        WeatherData weatherData = weatherAPI.getWeather(CITY_NAME,WeatherAPI.UNITS_METRIC,WeatherAPI.API_KEY).toBlocking().first();
         onView(withId(R.id.input_city_id)).perform(replaceText(CITY_NAME));
         onView(withId(R.id.input_city_id)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
         onView(withId(R.id.show_weather)).perform(click());
