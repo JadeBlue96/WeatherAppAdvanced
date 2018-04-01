@@ -71,7 +71,6 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
         ButterKnife.bind(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.downloading_info));
-        metric_flag=true;
         m_chg.setText(R.string.celsius);
         formatWeather=new FormatWeather(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -79,8 +78,19 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
         {
             icon.setVisibility(View.VISIBLE);
         }
-
-
+        SharedCityPreference preference=new SharedCityPreference(this);
+        final String city=preference.getCity();
+        final Boolean metric=preference.getMetric();
+        metric_flag=metric;
+        if(metric_flag)
+        {
+            m_chg.setText(R.string.celsius);
+        }
+        else {
+            m_chg.setText(R.string.fahrenheit);
+        }
+        in_city_name.setText(city);
+        presenter.ObtainWeather(weatherAPI,city,metric);
         setSupportActionBar(toolbar);
     }
 
@@ -181,6 +191,8 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
         formatWeather.displayWeather(weatherData);
         err.setText("");
         icon.setVisibility(View.VISIBLE);
+        SharedCityPreference preference=new SharedCityPreference(this);
+        preference.setCity(weatherData.getName());
     }
 
 
@@ -192,7 +204,7 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
         err.setVisibility(View.INVISIBLE);
         if(city.isEmpty())
         {
-            showErr("No city entered.");
+            showErr(getString(R.string.no_city_entered));
             return;
         }
         presenter.ObtainWeather(weatherAPI,city,metric_flag);
@@ -200,15 +212,17 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
 
     @OnClick(R.id.metric_change)
     public void switchMetric(View view) {
-        if(metric_flag==true)
+        if(metric_flag)
         {
             metric_flag=false;
             m_chg.setText(R.string.fahrenheit);
+            new SharedCityPreference(this).setMetric(metric_flag);
             showWeather(view);
         }
         else {
             metric_flag=true;
             m_chg.setText(R.string.celsius);
+            new SharedCityPreference(this).setMetric(metric_flag);
             showWeather(view);
         }
         err.setVisibility(View.INVISIBLE);

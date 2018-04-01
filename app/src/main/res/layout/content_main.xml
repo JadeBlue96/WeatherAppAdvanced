@@ -26,6 +26,11 @@
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
      android:orientation="vertical">
+     <LinearLayout
+         android:focusable="true"
+         android:focusableInTouchMode="true"
+         android:layout_width="0px"
+         android:layout_height="0px"/>
     <EditText
         android:id="@+id/input_city_id"
         android:layout_width="352dp"
@@ -33,11 +38,11 @@
         android:ems="10"
         android:hint="@string/city_country"
         android:textColorHint="@color/colorAccent"
+        android:nextFocusUp="@id/input_city_id"
+        android:nextFocusLeft="@id/input_city_id"
         android:inputType="text"
         android:singleLine="true">
 
-
-        <requestFocus />
     </EditText>
 
     <Button

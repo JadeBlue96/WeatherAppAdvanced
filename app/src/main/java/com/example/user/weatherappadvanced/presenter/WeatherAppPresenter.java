@@ -1,6 +1,8 @@
 package com.example.user.weatherappadvanced.presenter;
 
 
+import android.util.Log;
+
 import com.example.user.weatherappadvanced.API.WeatherAPI;
 import com.example.user.weatherappadvanced.model.WeatherData;
 import com.example.user.weatherappadvanced.view.WeatherAppView;
@@ -41,6 +43,7 @@ public class WeatherAppPresenter extends MvpBasePresenter<WeatherAppView> {
                         @Override
                         public void onError(Throwable e) {
                             getView().showErr(e.getMessage());
+                            Log.d("err_tag",e.getMessage());
                         }
 
                         @Override

@@ -54,14 +54,44 @@ public class MainActivityTest {
                 .weatherAPI();
     }
     @Test
-    public void checkNoCityEnteredSnackbar() {
+    public void checkNoCityEntered() {
+        onView(withId(R.id.input_city_id)).perform(replaceText(""));
         onView(withId(R.id.show_weather)).perform(click());
-        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.no_city_entered)))
+        onView(allOf(withId(R.id.err_field), withText(R.string.no_city_entered)))
                 .check(matches(isDisplayed()));
     }
     @Test
-    public void correctWeatherDataDisplayed() {
+    public void checkMetricSwitchText() {
+        onView(withId(R.id.metric_change)).perform(click());
+        onView(withId(R.id.metric_change)).check(matches(withText(R.string.fahrenheit)));
+        onView(withId(R.id.metric_change)).perform(click());
+        onView(withId(R.id.metric_change)).check(matches(withText(R.string.celsius)));
+    }
+    @Test
+    public void correctWeatherDataDisplayedMetric() {
+        onView(withId(R.id.metric_change)).perform(click());
         WeatherData weatherData = weatherAPI.getWeather(CITY_NAME,WeatherAPI.UNITS_METRIC,WeatherAPI.API_KEY).toBlocking().first();
+        onView(withId(R.id.city_id)).check(matches(withText("City:" + weatherData.getName())));
+        onView(withId(R.id.country_id)).check(matches(withText("Country:" + weatherData.getCountry())));
+        onView(withId(R.id.coords_id)).check(matches(withText("Coordinates:" +"(" + weatherData.getLat() + "," + weatherData.getLon() + ")")));
+        onView(withId(R.id.cod_id)).check(matches(withText("COD:"+ weatherData.getCod())));
+        onView(withId(R.id.temp_id)).check(matches(withText(String.format(Locale.UK, "Temperature: %.2f C", weatherData.getTemp()))));
+        onView(withId(R.id.main_id)).check(matches(withText("Weather status:"+weatherData.getWeatherMain())));
+        onView(withId(R.id.desc_id)).check(matches(withText("Weather Description:"+weatherData.getWeatherDesc())));
+        onView(withId(R.id.wind_id)).check(matches(withText("Wind Speed:"+weatherData.getWindSpd()+" m/s, Degrees:"+weatherData.getWindDeg())));
+        onView(withId(R.id.clouds_per_id)).check(matches(withText("Cloud Percentage:"+weatherData.getCloudPer()+"%")));
+
+        DateFormat local = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.UK);
+        Date d_sunrise = new Date(weatherData.getSunrise() * 1000);           //Sunrise date up to seconds
+        Date d_sunset = new Date(weatherData.getSunset() * 1000);              //Sunset date up to second
+
+        onView(withId(R.id.sunrise_id)).check(matches(withText("Sunrise:" + local.format(d_sunrise))));
+        onView(withId(R.id.sunset_id)).check(matches(withText("Sunset:" + local.format(d_sunset))));
+    }
+    @Test
+    public void correctWeatherDataDisplayedImperial() {
+        onView(withId(R.id.metric_change)).perform(click());
+        WeatherData weatherData = weatherAPI.getWeather(CITY_NAME,WeatherAPI.UNITS_IMPERIAL,WeatherAPI.API_KEY).toBlocking().first();
         onView(withId(R.id.input_city_id)).perform(replaceText(CITY_NAME));
         onView(withId(R.id.input_city_id)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
         onView(withId(R.id.show_weather)).perform(click());
@@ -69,10 +99,10 @@ public class MainActivityTest {
         onView(withId(R.id.country_id)).check(matches(withText("Country:" + weatherData.getCountry())));
         onView(withId(R.id.coords_id)).check(matches(withText("Coordinates:" +"(" + weatherData.getLat() + "," + weatherData.getLon() + ")")));
         onView(withId(R.id.cod_id)).check(matches(withText("COD:"+ weatherData.getCod())));
-        onView(withId(R.id.temp_id)).check(matches(withText(String.format(Locale.UK, "Temperature: %.2f C", weatherData.getTemp()-273.15))));
+        onView(withId(R.id.temp_id)).check(matches(withText(String.format(Locale.UK, "Temperature: %.2f F", weatherData.getTemp()))));
         onView(withId(R.id.main_id)).check(matches(withText("Weather status:"+weatherData.getWeatherMain())));
         onView(withId(R.id.desc_id)).check(matches(withText("Weather Description:"+weatherData.getWeatherDesc())));
-        onView(withId(R.id.wind_id)).check(matches(withText("Wind Speed:"+weatherData.getWindSpd()+"m/s, Degrees:"+weatherData.getWindDeg())));
+        onView(withId(R.id.wind_id)).check(matches(withText("Wind Speed:"+weatherData.getWindSpd()+" y/s, Degrees:"+weatherData.getWindDeg())));
         onView(withId(R.id.clouds_per_id)).check(matches(withText("Cloud Percentage:"+weatherData.getCloudPer()+"%")));
 
         DateFormat local = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.UK);
