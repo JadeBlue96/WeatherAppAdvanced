@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 public class SharedCityPreference {
-    SharedPreferences preferences;
-    public SharedCityPreference(MainActivity activity)
+    private final String name;
+    private final Boolean metric;
+    public SharedCityPreference(String m_name,Boolean m_metric)
     {
-        preferences=activity.getPreferences(Activity.MODE_PRIVATE);
+        name=m_name;
+        metric=m_metric;
     }
-    String getCity() {return preferences.getString("city","Burgas");}
-    void setCity(String city) {preferences.edit().putString("city",city).apply();}
-    Boolean getMetric() {return preferences.getBoolean("metric",true);}
-    void setMetric(Boolean metric) {preferences.edit().putBoolean("metric",metric).apply();}
+    //String getCity() {return preferences.getString("city","Burgas");}
+    //void setCity(String city) {preferences.edit().putString("city",city).apply();}
+   // Boolean getMetric() {return preferences.getBoolean("metric",true);}
+    //void setMetric(Boolean metric) {preferences.edit().putBoolean("metric",metric).apply();}
+    public String getName() {return name;}
+    public Boolean getMetric() {return metric;}
 
 }

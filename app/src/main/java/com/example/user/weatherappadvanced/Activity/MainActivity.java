@@ -3,10 +3,13 @@ package com.example.user.weatherappadvanced.Activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +42,7 @@ import butterknife.OnClick;
 public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter> implements WeatherAppView {
 
 
+    private static final String TAG = "MainActivity";
     @BindView(R.id.input_city_id) EditText in_city_name;
     @BindView(R.id.city_id) TextView city_name;
     @BindView(R.id.country_id)  TextView country_name;
@@ -58,6 +62,7 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
     protected Boolean metric_flag;
     //private Unbinder unbinder;
     private ProgressDialog progressDialog;
+    private SharedPreferenceHelper sharedPreferenceHelper;
     DateFormat local = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.UK);
 
     @Inject
@@ -78,9 +83,11 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
         {
             icon.setVisibility(View.VISIBLE);
         }
-        SharedCityPreference preference=new SharedCityPreference(this);
-        final String city=preference.getCity();
-        final Boolean metric=preference.getMetric();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferenceHelper=new SharedPreferenceHelper(sharedPreferences);
+        SharedCityPreference sharedCityPreference=sharedPreferenceHelper.getCityInfo();
+        final String city=sharedCityPreference.getName();
+        final Boolean metric=sharedCityPreference.getMetric();
         metric_flag=metric;
         if(metric_flag)
         {
@@ -191,8 +198,7 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
         formatWeather.displayWeather(weatherData);
         err.setText("");
         icon.setVisibility(View.VISIBLE);
-        SharedCityPreference preference=new SharedCityPreference(this);
-        preference.setCity(weatherData.getName());
+        SavePreference();
     }
 
 
@@ -216,19 +222,32 @@ public class MainActivity extends MvpActivity<WeatherAppView,WeatherAppPresenter
         {
             metric_flag=false;
             m_chg.setText(R.string.fahrenheit);
-            new SharedCityPreference(this).setMetric(metric_flag);
+            SavePreference();
             showWeather(view);
         }
         else {
             metric_flag=true;
             m_chg.setText(R.string.celsius);
-            new SharedCityPreference(this).setMetric(metric_flag);
+            SavePreference();
             showWeather(view);
         }
         err.setVisibility(View.INVISIBLE);
     }
 
 
+
+    public void SavePreference()
+    {
+        SharedCityPreference preference=new SharedCityPreference(in_city_name.getText().toString(),metric_flag);
+        boolean success=sharedPreferenceHelper.saveCityInfo(preference);
+        if(success)
+        {
+            Log.i(TAG, "Information saved");
+        }
+        else {
+            Log.e(TAG, "Failed to write information to SharedPreferences");
+        }
+    }
     public void hideKeyboard(Activity activity,
                              IBinder windowToken) {
         InputMethodManager mgr = (InputMethodManager) activity.getSystemService

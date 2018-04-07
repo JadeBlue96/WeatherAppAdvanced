@@ -60,17 +60,13 @@ public class MainActivityTest {
         onView(allOf(withId(R.id.err_field), withText(R.string.no_city_entered)))
                 .check(matches(isDisplayed()));
     }
-    @Test
-    public void checkMetricSwitchText() {
-        onView(withId(R.id.metric_change)).perform(click());
-        onView(withId(R.id.metric_change)).check(matches(withText(R.string.fahrenheit)));
-        onView(withId(R.id.metric_change)).perform(click());
-        onView(withId(R.id.metric_change)).check(matches(withText(R.string.celsius)));
-    }
+
     @Test
     public void correctWeatherDataDisplayedMetric() {
-        onView(withId(R.id.metric_change)).perform(click());
+
         WeatherData weatherData = weatherAPI.getWeather(CITY_NAME,WeatherAPI.UNITS_METRIC,WeatherAPI.API_KEY).toBlocking().first();
+
+        onView(withId(R.id.metric_change)).perform(click());
         onView(withId(R.id.city_id)).check(matches(withText("City:" + weatherData.getName())));
         onView(withId(R.id.country_id)).check(matches(withText("Country:" + weatherData.getCountry())));
         onView(withId(R.id.coords_id)).check(matches(withText("Coordinates:" +"(" + weatherData.getLat() + "," + weatherData.getLon() + ")")));
@@ -90,11 +86,9 @@ public class MainActivityTest {
     }
     @Test
     public void correctWeatherDataDisplayedImperial() {
-        onView(withId(R.id.metric_change)).perform(click());
         WeatherData weatherData = weatherAPI.getWeather(CITY_NAME,WeatherAPI.UNITS_IMPERIAL,WeatherAPI.API_KEY).toBlocking().first();
-        onView(withId(R.id.input_city_id)).perform(replaceText(CITY_NAME));
-        onView(withId(R.id.input_city_id)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
-        onView(withId(R.id.show_weather)).perform(click());
+
+        onView(withId(R.id.metric_change)).perform(click());
         onView(withId(R.id.city_id)).check(matches(withText("City:" + weatherData.getName())));
         onView(withId(R.id.country_id)).check(matches(withText("Country:" + weatherData.getCountry())));
         onView(withId(R.id.coords_id)).check(matches(withText("Coordinates:" +"(" + weatherData.getLat() + "," + weatherData.getLon() + ")")));
